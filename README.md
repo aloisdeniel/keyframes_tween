@@ -61,3 +61,57 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
   }
 }
 ```
+
+## Usage
+
+### Using durations
+
+```dart
+final tween = KeyframesTween.fromTime(
+  properties: [
+    TimeKeyframeProperty<Size>(
+      [
+        Size(10, 10).timeframe(milliseconds: 0),
+        Size(100, 100).timeframe(milliseconds: 500, Curves.easeInOut),
+        Size(200, 200).timeframe(seconds: 1),
+      ],
+    ),
+    TimeKeyframeProperty<Color>(
+      [
+        Colors.black.timeframe(milliseconds: 0),
+        Colors.red.timeframe(milliseconds: 800, Curves.easeInOut),
+        Colors.blue.timeframe(seconds: 1),
+      ],
+      name: 'background',
+    ),
+  ],
+);
+```
+
+### Custom lerp
+
+```dart
+final tween = KeyframesTween(
+  properties: [
+      KeyframeProperty<MyType>(
+        [
+          // ...
+        ],
+        lerp: (begin,end,t) =>  MyType.lerp(begin, end, t),
+      )
+  ],
+);
+```
+
+### Builder
+
+```dart
+return ValueListenableBuilder<KeyframeValue>(
+  valueListenable: tween.animate(controller),
+  builder: (context, values, _) => Container(
+    width: values<Size>().width,
+    height: values<Size>().height,
+    color: values<Color>('background'),
+  ),
+);
+```

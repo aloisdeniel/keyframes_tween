@@ -1,6 +1,6 @@
 name: keyframes_tween
 description: A tween that allow defining keyframes for various properties.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/aloisdeniel/keyframes_tween
 
 environment:
@@ -8,6 +8,7 @@ environment:
   flutter: ">=2.0.0"
 
 dependencies:
+  equatable: ^2.0.0
   flutter:
     sdk: flutter
 

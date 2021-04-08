@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,7 +13,7 @@ typedef T Lerp<T>(T a, T b, double t);
 /// See also :
 ///
 /// * [Keyframe] which is a value associated to a time.
-class KeyframeProperty<T> {
+class KeyframeProperty<T> extends Equatable {
   /// Create a property from a set of keyframes.
   KeyframeProperty(
     List<Keyframe<T>> keyframes, {
@@ -78,6 +79,59 @@ class KeyframeProperty<T> {
       after.curve.transform(intervalTime),
     );
   }
+
+  @override
+  List<Object?> get props => [name, lerp, keyframes];
+}
+
+class TimeKeyframeProperty<T> extends Equatable {
+  /// Create a property from a set of keyframes.
+  TimeKeyframeProperty(
+    List<TimeKeyframe<T>> keyframes, {
+    this.name,
+    this.lerp,
+  }) : this.keyframes = [
+          ...keyframes,
+        ]..sort((x, y) => x.time.compareTo(y.time));
+
+  /// The property type.
+  Type get type => T;
+
+  /// A unique key that idenfies the property from its type, and its name if not empty.
+  PropertyKey get key {
+    if (name != null) {
+      return NamedAndTypedPropertyKey(type, name!);
+    }
+    return TypedPropertyKey(type);
+  }
+
+  /// A name that identifies this property.
+  ///
+  /// This is useful to differentiate this property from another one of the same type. If this property is the
+  /// only one of type [T], the name isn't needed.
+  final String? name;
+
+  /// The lerping function used to interpolate a value of [T].
+  ///
+  /// Defaults to [defaultLerp].
+  final Lerp<T>? lerp;
+
+  /// The list of all the keyframes.
+  final List<TimeKeyframe<T>> keyframes;
+
+  KeyframeProperty<T> toKeyframeProperty(Duration totalDuration) =>
+      KeyframeProperty(
+        [
+          ...keyframes.map(
+            (e) => e.toKeyframe(totalDuration),
+          ),
+        ],
+        lerp: lerp,
+        name: name,
+      );
+
+  @override
+  List<Object?> get props => [name, lerp, keyframes];
 }
 
 /// A default lerp function that support all base types (`Color`, `Size`, `Decoration`, ...).
