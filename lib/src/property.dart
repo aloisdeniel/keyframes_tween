@@ -153,10 +153,17 @@ class TimeKeyframeProperty<T> {
   }
 }
 
+int lerpInt(int a, int b, double t) {
+  return (a + (b - a) * t).toInt();
+}
+
 /// A default lerp function that support all base types (`Color`, `Size`, `Decoration`, ...).
 T defaultLerp<T>(T begin, T end, double time) {
   final dynamic b = begin;
   final dynamic e = end;
+  if (T == int) {
+    return lerpInt(b, e, time) as T;
+  }
   if (T == double) {
     return lerpDouble(b, e, time) as T;
   }
