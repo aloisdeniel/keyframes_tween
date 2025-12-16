@@ -1,7 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:keyframes_tween/src/property.dart';
 
-import 'compound_value.dart';
+import 'keyframe_value.dart';
 
 /// A tween that define multiple animated [properties].
 ///

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,7 +12,7 @@ typedef T Lerp<T>(T a, T b, double t);
 /// See also :
 ///
 /// * [Keyframe] which is a value associated to a time.
-class KeyframeProperty<T> extends Equatable {
+class KeyframeProperty<T> {
   /// Create a property from a set of keyframes.
   KeyframeProperty(
     List<Keyframe<T>> keyframes, {
@@ -81,10 +80,20 @@ class KeyframeProperty<T> extends Equatable {
   }
 
   @override
-  List<Object?> get props => [name, lerp, keyframes];
+  int get hashCode => Object.hash(name, lerp, Object.hashAll(keyframes));
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is KeyframeProperty<T> &&
+        other.name == name &&
+        other.lerp == lerp &&
+        listEquals(other.keyframes, keyframes);
+  }
 }
 
-class TimeKeyframeProperty<T> extends Equatable {
+class TimeKeyframeProperty<T> {
   /// Create a property from a set of keyframes.
   TimeKeyframeProperty(
     List<TimeKeyframe<T>> keyframes, {
@@ -131,7 +140,17 @@ class TimeKeyframeProperty<T> extends Equatable {
       );
 
   @override
-  List<Object?> get props => [name, lerp, keyframes];
+  int get hashCode => Object.hash(name, lerp, Object.hashAll(keyframes));
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is KeyframeProperty<T> &&
+        other.name == name &&
+        other.lerp == lerp &&
+        listEquals(other.keyframes, keyframes);
+  }
 }
 
 /// A default lerp function that support all base types (`Color`, `Size`, `Decoration`, ...).

@@ -45,7 +45,8 @@ class _ExampleState extends State<Example> with TickerProviderStateMixin {
       [
         Matrix4.identity().keyframe(0.0),
         Matrix4.identity().keyframe(0.6),
-        (Matrix4.rotationZ(4)..translate(-200.0, -100.0)).keyframe(
+        (Matrix4.rotationZ(4)..translateByDouble(-200.0, -100.0, 0, 0))
+            .keyframe(
           1.0,
           Curves.easeInOut,
         ),

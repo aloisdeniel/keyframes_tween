@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/animation.dart';
 
-class Keyframe<T> extends Equatable {
+class Keyframe<T> {
   const Keyframe(
     this.time,
     this.value, {
@@ -25,7 +24,17 @@ class Keyframe<T> extends Equatable {
   final T value;
 
   @override
-  List<Object?> get props => [time, curve, value];
+  int get hashCode => Object.hash(time, curve, value);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Keyframe<T> &&
+        other.time == time &&
+        other.curve == curve &&
+        other.value == value;
+  }
 }
 
 extension KeyframeExtension<T> on T {
@@ -34,7 +43,7 @@ extension KeyframeExtension<T> on T {
   }
 }
 
-class TimeKeyframe<T> extends Equatable {
+class TimeKeyframe<T> {
   const TimeKeyframe(
     this.time,
     this.value, {
@@ -52,7 +61,17 @@ class TimeKeyframe<T> extends Equatable {
       );
 
   @override
-  List<Object?> get props => [time, curve, value];
+  int get hashCode => Object.hash(time, curve, value);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Keyframe<T> &&
+        other.time == time &&
+        other.curve == curve &&
+        other.value == value;
+  }
 }
 
 extension TimeKeyframeExtension<T> on T {

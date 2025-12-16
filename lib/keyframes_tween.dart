@@ -1,6 +1,6 @@
-library keyframes_tween;
+library;
 
-export 'src/compound_value.dart';
+export 'src/keyframe_value.dart';
 export 'src/keyframe.dart';
 export 'src/property.dart';
 export 'src/tween.dart';
